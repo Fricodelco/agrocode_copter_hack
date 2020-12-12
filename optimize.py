@@ -10,7 +10,7 @@ def optimize_time(time_list):
 
     return min_index, sum_time[min_index]
 
-def optimize_trajectory(copter, path, points_pole):
+def optimize_trajectory(copter, path):
     k1_start = 0.1
     k2_start = 0.1
     k3_start = 1-k1_start-k2_start
@@ -33,14 +33,14 @@ def optimize_trajectory(copter, path, points_pole):
             k_list.append([k1, k2_k, k3_k])
     
     for el in k_list:
-        horizontal_lines.get_figure(points_pole,*k_list)
+        horizontal_lines.get_figure(*el)
         points = path.get_points()
         copter.points = points
         time_struct = copter.calculate_time()
         time_list.append([time_struct['fig1']['time'], time_struct['fig2']['time'], time_struct['fig2']['time']])#new times 
     
     index, min_time = optimize_time(time_list)
-    horizontal_lines.get_figure(points_pole,*k_list[index])
+    horizontal_lines.get_figure(*k_list[index])
     points_optimize = path.get_points()
     copter.points = points_optimize
     time_struct = copter.calculate_time()

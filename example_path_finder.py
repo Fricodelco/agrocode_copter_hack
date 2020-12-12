@@ -66,7 +66,7 @@ class PathFinder():
                     # parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
                 # else:
                 if n == len(x)-1:
-                    print(line_max['y1'], y[n-2])
+                    # print(line_max['y1'], y[n-2])
                     if line_max['y1'] > y[n-2]:
                         parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
                     else:

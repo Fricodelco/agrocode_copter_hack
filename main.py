@@ -8,5 +8,5 @@ if __name__=="__main__":
     path = PathFinder()
     copter = Copter([])
     points_pole, proection_angle, base_point_gps = parser_gps_and_convert_mission.parse_kml_file(name_file)
-    stop_iter_point = optimize.optimize_trajectory(copter, path, points_pole)
+    stop_iter_point = optimize.optimize_trajectory(copter, path)
     parser_gps_and_convert_mission.flight_mission(proection_angle,base_point_gps, stop_iter_point)
