@@ -1,4 +1,5 @@
 import json
+import horizontal_lines
 
 def optimize_time(time_list):
     sum_time = []
@@ -32,17 +33,17 @@ def optimize_trajectory(copter, path, points_pole):
             k_list.append([k1, k2_k, k3_k])
     
     for el in k_list:
-        #get and write new points of path
+        horizontal_lines.get_figure(points_pole,*k_list)
         points = path.get_points()
         copter.points = points
         time_struct = copter.calculate_time()
         time_list.append([time_struct['fig1']['time'], time_struct['fig2']['time'], time_struct['fig2']['time']])#new times 
     
     index, min_time = optimize_time(time_list)
-    #new figure point
+    horizontal_lines.get_figure(points_pole,*k_list[index])
     points_optimize = path.get_points()
     copter.points = points_optimize
-    time_struct = copter.calculate_time()#get stop points
+    time_struct = copter.calculate_time()
 
     stop_time = [time_struct['fig1']['iters_of_stop_points'], time_struct['fig2']['iters_of_stop_points'], time_struct['fig3']['iters_of_stop_points']]
 
