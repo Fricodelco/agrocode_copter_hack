@@ -12,6 +12,7 @@ class Copter():
         self.time_inc = 0.005
         self.points = points
         self.extra_time = [0,0,0] #time for copters to launch
+        self.bak = (10/50)*60*60
         # print(self.points)
         # self.x_y = self.load_points_from_json(0)
         # print(x_y)
@@ -100,7 +101,7 @@ class Copter():
                 time_angle = self.time_for_turn(angle[i])
                 time_inc += time_length
                 time_inc += time_angle
-                if time_inc > 600:
+                if time_inc > self.bak:
                     iters_of_stop_points.append(i-1)
                     time_of_each_land.append(time)
                     time_inc = 0
