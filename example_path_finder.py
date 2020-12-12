@@ -71,12 +71,12 @@ class PathFinder():
                         parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
                     else:
                         parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-            
                 else:
+                    # print('s')
                     if line_max['y1'] > y[n+1]:
-                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                    else:
                         parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                    else:
+                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
                         
                 # print(parallel_line)
                 # print(line_max)
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         data = json.load(read_file)
     # print(data)
     points = [data['figure1'], data['figure2'], data['figure3']]
-    # points = [data['figure1']]
+    # points = [data['figure2']]
     # points.reverse()
     j = 0
     # flag = True
