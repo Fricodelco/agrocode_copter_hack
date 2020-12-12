@@ -32,12 +32,14 @@ class PathFinder():
         y_of_max = [y[n],y[n-1]]
         # plt.plot(x_of_max, y_of_max, 'r--')
         # plt.grid(True)
+
         n_for_line = n-1
         temp = lines[0]
         lines[0] = lines[n_for_line]
         lines[n_for_line] = temp
         del temp
         line_max = lines[0]
+        # print(line_max)
         #find perpendikular ot samoi dalnei tochki do samoi bolshoi priamoi
         distance = []
         for i in range(1, len(x),1):
@@ -60,9 +62,25 @@ class PathFinder():
             if d%2 == 0 :
                 continue
             else:
-                parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                # if d/2*sqrt(line_max['a']**2+line_max['b']**2) > line_max['c']:
+                    # parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                # else:
+                if n == len(x)-1:
+                    print(line_max['y1'], y[n-2])
+                    if line_max['y1'] > y[n-2]:
+                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                    else:
+                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+            
+                else:
+                    if line_max['y1'] > y[n+1]:
+                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                    else:
+                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                        
+                # print(parallel_line)
+                # print(line_max)
                 #finde cross of parallel with previous line and next line
-                
                 for i in range(1, len(lines),1):
                 
                     x_cross_x, y_cross_y = self.find_cross(parallel_line, lines[i]) 
@@ -178,13 +196,17 @@ if __name__ == '__main__':
         data = json.load(read_file)
     # print(data)
     points = [data['figure1'], data['figure2'], data['figure3']]
-    # points = [data['figure3']]
+    # points = [data['figure1']]
+    # points.reverse()
     j = 0
+    # flag = True
+    plt.plot(x_field, y_field, 'b')
+    
     for point in points:
         x_part, y_part = distract_coords(point)
         plt.plot(x_part, y_part, 'r')
-    plt.plot(x_field, y_field, 'b')
-    
+        # if flag == True:
+            # flag = False
     j = 0
 
     with open('points.json', 'w') as write_file:
@@ -207,8 +229,8 @@ if __name__ == '__main__':
             if j == 2:
                 plt.plot(x, y, 'y--')
                 
-            # plt.plot([x_max[0]*5,x_max[0]*5], [y_max[0]*5,y_max[0]*5], 'ro')
-            plt.plot(x[0], y[0], 'ro')
+            plt.plot([x_max[0]*5,x_max[0]*5], [y_max[0]*5,y_max[0]*5], 'ro')
+            # plt.plot(x[0], y[0], 'ro')
             
             data_local = {"x": x, "y": y}
             data['points_'+str(j)] = data_local 
