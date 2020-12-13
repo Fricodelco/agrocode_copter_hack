@@ -107,8 +107,8 @@ class PathFinder():
         # plt.plot(x_cross, y_cross, 'g--')
         for i in range(0, len(x_cross)-1,2):
             alpha = atan2(y_cross[i] - y_cross[i+1], x_cross[i] - x_cross[i+1])
-            delta_x = abs(0*cos(alpha))     #0.4 its 2/5 of 5 meters (1 cell = 5 meter)
-            delta_y = abs(0*sin(alpha))
+            delta_x = -abs(0.5*cos(alpha))     #0.4 its 2/5 of 5 meters (1 cell = 5 meter)
+            delta_y = -abs(0.5*sin(alpha))
             if x_cross[i] > x_cross[i+1]:
                 x_cross[i] -= delta_x
                 x_cross[i+1] += delta_x
@@ -122,13 +122,23 @@ class PathFinder():
                 y_cross[i] += delta_y
                 y_cross[i+1] -= delta_y
             
-        # plt.plot(x_cross, y_cross, 'bo')
-
-       
-        # plt.show()
-        # x_of_max = [x[n],x[n-1]]
-        # y_of_max = [y[n],y[n-1]]
-        
+        """x_1 = [x_cross[0], x_cross[1]]
+        x_2 = []
+        y_1 = [y_cross[0], y_cross[1]]
+        y_2 = []
+        for i in range(4,len(x_cross)-2,2):
+            x_1.append(x_cross[i+1])
+            x_1.append(x_cross[i]) 
+            y_1.append(y_cross[i+1])
+            y_1.append(y_cross[i]) 
+            x_1.append(x_cross[i+2]) 
+            y_1.append(y_cross[i+2])
+            
+        print(x_cross)
+        print(x_1)
+        l = len(x_1)
+        return x_1, y_1, x_of_max, y_of_max, l"""
+    
         return x_cross, y_cross, x_of_max, y_of_max
     
     def find_cross(self, line1, line2):
@@ -224,6 +234,7 @@ if __name__ == '__main__':
             x, y, x_max, y_max = path.find_max_length(point)
             # print(len(x))
             for i in range(0,len(x)):
+            # for i in range(0,l):
                 x[i] = x[i]*5 
                 y[i] = y[i]*5 
             if j == 0:

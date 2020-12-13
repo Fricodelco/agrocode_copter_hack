@@ -69,7 +69,7 @@ class Copter():
     def get_ang_cost(self, first, second, third):
         ang1 = atan2(second[1] - first[1], second[0] - first[0])
         ang2 = atan2(third[1] - second[1], third[0] - second[0])
-        ang3 = ang1 + ang2 - pi/2
+        ang3 = -ang1 + ang2
         return ang3
     def get_distance_angle_between_points(self, x_points=0, y_points=0, id_=-1):
         if type(x_points) is int:
@@ -89,6 +89,8 @@ class Copter():
         answer = {'fig1':0,
                 'fig2':0,
                 'fig3':0}
+        angle_indexis = []
+        radiuss = []
         for j in range(0,3):
             points_cur = self.points['points_'+str(j)]
             dist, angle = self.get_distance_angle_between_points(x_points=points_cur['x'], y_points=points_cur['y'])
@@ -99,7 +101,12 @@ class Copter():
             time_of_each_land = []
             time_of_turns = 0
             first_land = True
+            print(angle)
             for i in range(0, len(dist), 1):
+                if(abs(angle[i]) <= pi/2):
+                    angle_indexis.append(i)
+                    r = (18)/(angle[i]-pi/2)
+                    radiuss.append(abs(r))
                 time_length, _, _ = self.time_for_line_movement(dist[i])
                 time_angle = self.time_for_turn(angle[i])
                 time_inc += time_length
@@ -120,14 +127,15 @@ class Copter():
             ans = {'time': time, 'iters_of_stop_points': iters_of_stop_points, 'time_of_each_land': time_of_each_land}
             answer['fig'+str(j+1)] = ans
             # print(time)
-        return answer
+        # print(len(angle_indexis))
+        return answer, angle_indexis
 if __name__ == '__main__':
     path = PathFinder()
     
     points = path.get_points()
     # print(points)
     copter = Copter(points)
-    # print(copter.time_for_line_movement(400))
+    # print(copter.time_for_line_movement(5))
     # print(copter.time_for_turn(-1))
     # for j in range(0,3):
     print(copter.calculate_time())
