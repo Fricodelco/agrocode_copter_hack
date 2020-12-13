@@ -2,13 +2,21 @@ import json
 import horizontal_lines
 
 def optimize_time(time_list):
-    sum_time = []
-    for el in time_list:
-        sum_time.append(sum(el))
-    
-    min_index = sum_time.index(min(sum_time))
+    max_min_ind = 0
+    max_min_time = max(time_list[0])
 
-    return min_index, sum_time[min_index]
+    for i, el in enumerate(time_list):
+        if (max(el) < max_min_time):
+            max_min_ind = i
+            max_min_time = max(el)
+
+    # sum_time = []
+    # for el in time_list:
+    #     sum_time.append(sum(el))
+    
+    # min_index = sum_time.index(min(sum_time))
+
+    return max_min_ind, time_list[max_min_ind]
 
 def optimize_trajectory(copter, path):
     k1_start = 0.1
