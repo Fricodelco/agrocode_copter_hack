@@ -1,5 +1,65 @@
 [0]
 Type=NAV_LEG_TAKEOFF
+Lat=50.50716428318435
+Lon=45.90961245461053
+Alt=2.0
+Radius=2.0
+WaitTime=0.1
+MaxHSpeed=6.0
+MaxVSpeed=2.0
+POILat=0
+POILon=0
+POIAltitude=0
+POIHeading=0
+POIPitch=-90
+POIRoll=0
+Flg1=160
+Photo=0
+PanoSectors=0
+Delta=0
+
+[1]
+Type=NAV_LEG_NON_STOP
+Lat=50.504896730397654
+Lon=45.906178414586876
+Alt=2.0
+Radius=6.389413102077908
+WaitTime=0.1
+MaxHSpeed=6.0
+MaxVSpeed=2.0
+POILat=0
+POILon=0
+POIAltitude=0
+POIHeading=0
+POIPitch=-90
+POIRoll=0
+Flg1=160
+Photo=0
+PanoSectors=0
+Delta=0
+
+[2]
+Type=NAV_LEG_SIMPLE
+Lat=50.50492591276821
+Lon=45.90614102783361
+Alt=2.0
+Radius=2.0
+WaitTime=0.1
+MaxHSpeed=6.0
+MaxVSpeed=2.0
+POILat=0
+POILon=0
+POIAltitude=0
+POIHeading=0
+POIPitch=-90
+POIRoll=0
+Flg1=160
+Photo=0
+PanoSectors=0
+Delta=0
+
+[3]
+Type=NAV_LEG_SIMPLE
 Lat=50.50717054835955
 Lon=45.909540361469595
 Alt=2.0
@@ -18,7 +78,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[1]
+[4]
 Type=NAV_LEG_SIMPLE
 Lat=50.507176813534734
 Lon=45.90946826832865
@@ -38,7 +98,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[2]
+[5]
 Type=NAV_LEG_SIMPLE
 Lat=50.504955095138754
 Lon=45.90610364108035
@@ -58,7 +118,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[3]
+[6]
 Type=NAV_LEG_SIMPLE
 Lat=50.5049842775093
 Lon=45.90606625432709
@@ -78,7 +138,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[4]
+[7]
 Type=NAV_LEG_SIMPLE
 Lat=50.50718307870993
 Lon=45.909396175187716
@@ -98,7 +158,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[5]
+[8]
 Type=NAV_LEG_SIMPLE
 Lat=50.507189343885116
 Lon=45.90932408204677
@@ -118,7 +178,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[6]
+[9]
 Type=NAV_LEG_SIMPLE
 Lat=50.505013459879855
 Lon=45.906028867573816
@@ -138,7 +198,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[7]
+[10]
 Type=NAV_LEG_SIMPLE
 Lat=50.5050426422504
 Lon=45.90599148082055
@@ -158,7 +218,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[8]
+[11]
 Type=NAV_LEG_SIMPLE
 Lat=50.50719560906031
 Lon=45.90925198890584
@@ -178,7 +238,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[9]
+[12]
 Type=NAV_LEG_SIMPLE
 Lat=50.50717698078036
 Lon=45.90914219647878
@@ -198,7 +258,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[10]
+[13]
 Type=NAV_LEG_SIMPLE
 Lat=50.50507182462095
 Lon=45.90595409406729
@@ -218,7 +278,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[11]
+[14]
 Type=NAV_LEG_SIMPLE
 Lat=50.5051010069915
 Lon=45.90591670731403
@@ -238,7 +298,7 @@ Photo=0
 PanoSectors=0
 Delta=0
 
-[12]
+[15]
 Type=NAV_LEG_TO_LAND
 Lat=50.50714955354571
 Lon=45.90901907868935
