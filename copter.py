@@ -101,7 +101,7 @@ class Copter():
             time_of_each_land = []
             time_of_turns = 0
             first_land = True
-            print(angle)
+            # print(angle)
             for i in range(0, len(dist), 1):
                 if(abs(angle[i]) <= pi/2):
                     angle_indexis.append(i)
@@ -128,7 +128,7 @@ class Copter():
             answer['fig'+str(j+1)] = ans
             # print(time)
         # print(len(angle_indexis))
-        return answer, angle_indexis
+        return answer, angle_indexis, radiuss
 if __name__ == '__main__':
     path = PathFinder()
     
