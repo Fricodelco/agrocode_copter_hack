@@ -6,7 +6,7 @@ import numpy as np
 import math
 
 
-iter_step = 0.1
+iter_step = 0.3
 
 class Figure:
     def __init__(self,points):

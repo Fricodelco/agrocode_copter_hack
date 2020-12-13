@@ -11,7 +11,9 @@ class Copter():
         self.w = pi/4
         self.time_inc = 0.005
         self.points = points
-        self.extra_time = [0,0,0] #time for copters to launch
+        self.extra_time = [20*60,10*60,0] #time for copters to launch
+        # self.extra_time = [0,0,0] #time for copters to launch
+        
         self.bak = (10/50)*60*60
         # print(self.points)
         # self.x_y = self.load_points_from_json(0)

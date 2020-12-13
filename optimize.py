@@ -23,7 +23,7 @@ def optimize_trajectory(copter, path):
     k2_start = 0.1
     k3_start = 1-k1_start-k2_start
 
-    step = 0.1
+    step = 0.05
 
     k_iter = int(k3_start//step)
 
