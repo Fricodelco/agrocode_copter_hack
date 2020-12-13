@@ -96,6 +96,7 @@ class Copter():
             iters_of_stop_points = []
             time_of_each_land = []
             time_of_turns = 0
+            first_land = True
             for i in range(0, len(dist), 1):
                 time_length, _, _ = self.time_for_line_movement(dist[i])
                 time_angle = self.time_for_turn(angle[i])
@@ -103,13 +104,16 @@ class Copter():
                 time_inc += time_angle
                 if time_inc > self.bak:
                     iters_of_stop_points.append(i-1)
+                    if first_land == True:
+                        time+=self.extra_time[j]
+                        first_land = False
                     time_of_each_land.append(time)
                     time_inc = 0
                     time+=180
                 time += time_length
                 time += time_angle
                 time_of_turns +=time_angle
-            time = time + self.extra_time[j]
+            # time = time + self.extra_time[j]
             # print(time_of_turns)
             ans = {'time': time, 'iters_of_stop_points': iters_of_stop_points, 'time_of_each_land': time_of_each_land}
             answer['fig'+str(j+1)] = ans
