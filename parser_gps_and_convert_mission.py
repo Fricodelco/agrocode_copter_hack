@@ -7,6 +7,11 @@ import json
 
 rad = 6372795
 
+NAV_LEG_TAKEOFF = 'NAV_LEG_TAKEOFF'
+NAV_LEG_SIMPLE = 'NAV_LEG_SIMPLE'
+NAV_LEG_TO_LAND = 'NAV_LEG_TO_LAND'
+NAV_LEG_NON_STOP = 'NAV_LEG_NON_STOP'
+
 def points_distance(point1, point2):
     llat1 = point1[1]
     llong1 = point1[0]
@@ -63,8 +68,41 @@ def from_meter_to_gps(x_point, y_point, pr_angle, base_point):
         gps_point.append([base_point[0]+x_point[i]/rad*180/math.pi, base_point[1]+y_point[i]/rad*180/math.pi])
     return gps_point
 
+def point_lx(number, type_, lat, lon, alt, radius, waitTime, maxhspeed, maxvspeed, 
+                pOILat, pOILon, pOIAltitude, pOIHeading, pOIPitch, pOIRoll, flg1, photo, panoSectors, delta):
+    point = ('[{}]\nType={}\nLat={}\nLon={}\nAlt={}\nRadius={}\n' + \
+            'WaitTime={}\nMaxHSpeed={}\nMaxVSpeed={}\nPOILat={}\n' + \
+            'POILon={}\nPOIAltitude={}\nPOIHeading={}\nPOIPitch={}\n' + \
+            'POIRoll={}\nFlg1={}\nPhoto={}\nPanoSectors={}\nDelta={}\n\n').format(number, type_, lat, lon,
+                                                                            alt, radius, waitTime, maxhspeed, maxvspeed, 
+                                                                            pOILat, pOILon, pOIAltitude, pOIHeading, pOIPitch,
+                                                                            pOIRoll, flg1, photo, panoSectors, delta)
+
+    return point
+
+def point_lx_for_task(number, type_, lat, lon, alt, radius):
+    point = point_lx(number=number, type_=type_, lat=lat, lon=lon, 
+            alt=alt, radius=radius, waitTime=0, maxhspeed=2.0, 
+            maxvspeed=6.0, pOILat=0, pOILon=0, pOIAltitude=0, 
+            pOIHeading=0, pOIPitch=-90, pOIRoll=0, flg1=160, 
+            photo=0, panoSectors=0, delta=0)
+    return point
+
+def write_path_mission(file_name, j, start_index, points_in_gps, i, el):
+    with open(file_name+str(j)+'.txt','w') as wr:
+        for k in range(start_index,len(points_in_gps[i][0])):#point
+            if k == start_index:
+                wr.write(point_lx_for_task(k-start_index, NAV_LEG_TAKEOFF, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, 2.0))
+            elif k == el:
+                wr.write(point_lx_for_task(k-start_index, NAV_LEG_TO_LAND, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, 2.0))
+                start_index = el
+                break
+            else:
+                wr.write(point_lx_for_task(k-start_index, NAV_LEG_SIMPLE, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, 2.0))
+    return start_index
+
 def flight_mission(pr_angle, base_point, stop_point):
-    file_name = ['first_mission.txt','second_mission.txt','third_mission.txt']
+    file_name_lx = ['first_mission_lx_','second_mission_lx_','third_mission_lx_']
     with open('points.json') as js:
         data = json.load(js)
 
@@ -72,23 +110,30 @@ def flight_mission(pr_angle, base_point, stop_point):
     points_in_gps = [[],[],[]]
     for i, points_i in enumerate(points_part):
         points_in_gps[i].append(from_meter_to_gps(points_i['x'], points_i['y'], pr_angle, base_point))
+    
+    start_index = 0
 
-    for j, f_name in enumerate(file_name):
-        with open(f_name, 'w') as wr:
-            wr.write('QGC WPL 110\n')
-            key1 = 1
-            key2 = 0
-            hig = 0
-            for i in range(len(points_in_gps[j][0])):
-                if i != 0:
-                    key1 = 0
-                    key2 = 3
-                    hig = 50.0
-                wr.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(
-                    i, key1, key2, 16, 2.0,
-                    0, 0, 0, points_in_gps[j][0][i][1],
-                    points_in_gps[j][0][i][0],
-                    hig,1))
+    for i, file_name in enumerate(file_name_lx):#index copter
+        for j, el in enumerate(stop_point[i]):#stop point
+            start_index = write_path_mission(file_name, j, start_index, points_in_gps, i, el)
+        write_path_mission(file_name, len(stop_point[i]), start_index, points_in_gps, i, len(points_in_gps[i][0])-1)
+                    
+    # for j, f_name in enumerate(file_name_ardu):
+    #     with open(f_name, 'w') as wr:
+    #         wr.write('QGC WPL 110\n')
+    #         key1 = 1
+    #         key2 = 0
+    #         hig = 0
+    #         for i in range(len(points_in_gps[j][0])):
+    #             if i != 0:
+    #                 key1 = 0
+    #                 key2 = 3
+    #                 hig = 50.0
+    #             wr.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(
+    #                 i, key1, key2, 16, 1.0,
+    #                 0, 0, 0, points_in_gps[j][0][i][1],
+    #                 points_in_gps[j][0][i][0],
+    #                 hig,1))
 
 def parse_kml_file(name_file):
     kml_file = path.join(name_file)
@@ -134,3 +179,5 @@ def parse_kml_file(name_file):
         temp.append([x_point[i], y_point[i]])
 
     return temp, pr_angle, base_point
+
+flight_mission(0.57, [45.7695, 50.0658], [[10,21],[11, 25],[13,28]])
