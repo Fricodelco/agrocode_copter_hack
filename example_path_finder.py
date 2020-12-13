@@ -94,7 +94,7 @@ class PathFinder():
             euql_1 = sqrt(x_cross[i-1]**2 + y_cross[i-1]**2)
             euql_2 = sqrt(x_cross[i+1]**2 + y_cross[i+1]**2)
             # print(abs(euql_1 - euql_2), i)
-            if abs(euql_1 - euql_2) < 3:
+            if abs(euql_1 - euql_2) < 4:
                 temp = x_cross[i]
                 x_cross[i] = x_cross[i+1]
                 x_cross[i+1] = temp
@@ -103,7 +103,10 @@ class PathFinder():
                 i+=2
             else:
                 # print(abs(euql_1 - euql_2))
+                # if i!= len(x_cross) -2:
                 i+=2
+                # else:
+                  
         #optimize points 
         # plt.plot(x_cross, y_cross, 'g--')
         for i in range(0, len(x_cross)-1,2):

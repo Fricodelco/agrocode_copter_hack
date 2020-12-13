@@ -7,6 +7,7 @@ from time import sleep
 class Copter():
     def __init__(self, points):
         self.v_max = 6
+        self.cur_v = 0
         self.a = 1
         self.w = pi/4
         self.time_inc = 0.005
@@ -18,9 +19,9 @@ class Copter():
         # print(self.points)
         # self.x_y = self.load_points_from_json(0)
         # print(x_y)
-    def time_for_line_movement(self, length):
+    def time_for_line_movement(self, length, v_start, stop_v):
         current_time = 0
-        current_velocity = 0
+        current_velocity = v_start
         current_path = 0
         time_inc = self.time_inc
         first = True
@@ -29,7 +30,7 @@ class Copter():
             time_to_stop = current_velocity/self.a
             s_to_stop = current_velocity*time_to_stop-(self.a*(time_to_stop)**2)/2
             delta_s = length - current_path
-            if s_to_stop > delta_s:
+            if s_to_stop > delta_s and stop_v == 0:
                 if first == True:
                     # print(current_time, s_to_stop, time_to_stop, current_velocity)
                     first = False
@@ -102,23 +103,33 @@ class Copter():
             time_of_turns = 0
             first_land = True
             # print(angle)
-            for i in range(0, len(dist), 1):
+            i = 0
+            while i < len(dist):
+            # for i in range(0, len(dist), 1):
                 time_length = 0
                 time_angle = 0
                 if(abs(angle[i]) <= pi/2):
                     angle_indexis[j].append(i)
                     r = (18)/(angle[i]-pi/2)
                     radiuss[j].append(abs(r))
-                    time_length, _, _ = self.time_for_line_movement(dist[i])
-                    time_angle = self.time_for_turn(angle[i])
-                    time_inc += time_length
-                    time_inc += time_angle
-
+                    if abs(abs(dist[i]*sin(angle[i-1])-5) < 0.1):
+                        # print("short")
+                        time_length, _, _ = self.time_for_line_movement(18,0,0)
+                        # self.cur_v = self.v_max
+                    else:
+                        # print("long")
+                        time_length, _, _ = self.time_for_line_movement(dist[i]+18,0,0)
+                        if i!= len(dist)-1:
+                            time_angle = self.time_for_turn(angle[i+1])
+                            i+=1
                 else:
-                    time_length, _, _ = self.time_for_line_movement(dist[i])
+                    # print(dist[i])
+                    self.cur_v = 0
+                    time_length, _, _ = self.time_for_line_movement(dist[i],self.cur_v,0)
                     time_angle = self.time_for_turn(angle[i])
                     time_inc += time_length
                     time_inc += time_angle
+                    # print(time_length)
                 if time_inc > self.bak:
                     iters_of_stop_points.append(i-1)
                     if first_land == True:
@@ -130,6 +141,7 @@ class Copter():
                 time += time_length
                 time += time_angle
                 time_of_turns +=time_angle
+                i+=1
             # time = time + self.extra_time[j]
             # print(time_of_turns)
             ans = {'time': time, 'iters_of_stop_points': iters_of_stop_points, 'time_of_each_land': time_of_each_land}
@@ -148,4 +160,5 @@ if __name__ == '__main__':
     # print(copter.time_for_line_movement(5))
     # print(copter.time_for_turn(-1))
     # for j in range(0,3):
-    print(copter.calculate_time())
+    times, _, _ = copter.calculate_time()
+    print(times)
