@@ -82,8 +82,8 @@ def point_lx(number, type_, lat, lon, alt, radius, waitTime, maxhspeed, maxvspee
 
 def point_lx_for_task(number, type_, lat, lon, alt, radius):
     point = point_lx(number=number, type_=type_, lat=lat, lon=lon, 
-            alt=alt, radius=radius, waitTime=0.1, maxhspeed=2.0, 
-            maxvspeed=6.0, pOILat=0, pOILon=0, pOIAltitude=0, 
+            alt=alt, radius=radius, waitTime=0.1, maxhspeed=6.0, 
+            maxvspeed=2.0, pOILat=0, pOILon=0, pOIAltitude=0, 
             pOIHeading=0, pOIPitch=-90, pOIRoll=0, flg1=160, 
             photo=0, panoSectors=0, delta=0)
     return point
