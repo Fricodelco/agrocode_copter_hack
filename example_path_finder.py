@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from math import sqrt
 import json
 from math import atan2, sin, cos
+from horizontal_lines import get_figure
 class PathFinder():
     def __init__(self):
         a = 1
@@ -62,24 +63,20 @@ class PathFinder():
             if d%2 == 0 :
                 continue
             else:
-                # if d/2*sqrt(line_max['a']**2+line_max['b']**2) > line_max['c']:
-                    # parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                # else:
-                if n == len(x)-1:
-                    # print(line_max['y1'], y[n-2])
-                    if line_max['y1'] > y[n-2]:
-                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                    else:
-                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                else:
-                    # print('s')
-                    if line_max['y1'] > y[n+1]:
-                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                    else:
-                        parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
-                        
-                # print(parallel_line)
-                # print(line_max)
+                parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']-d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
+                #finde cross of parallel with previous line and next line
+                for i in range(1, len(lines),1):
+                
+                    x_cross_x, y_cross_y = self.find_cross(parallel_line, lines[i]) 
+                    # print(lines[i]['x1'])
+                    # print(x_cross_x, lines[i]['x1'])
+                    if (x_cross_x > lines[i]['x1'] and x_cross_x < lines[i]['x2']) or (x_cross_x < lines[i]['x1'] and x_cross_x > lines[i]['x2']):
+                    # if (y_cross_y < lines[i-1]['y1'] and y_cross_y > lines[i-1]['y2']):
+                        if x_cross_x != 0:                        
+                            x_cross.append(x_cross_x)
+                            y_cross.append(y_cross_y)
+
+                parallel_line = {'a': line_max['a'], 'b': line_max['b'], 'c': line_max['c']+d/2*sqrt(line_max['a']**2+line_max['b']**2)} 
                 #finde cross of parallel with previous line and next line
                 for i in range(1, len(lines),1):
                 
@@ -177,6 +174,11 @@ class PathFinder():
                 j+=1
             json.dump(data,write_file)
         return data
+    def sign(self, number):
+        if number < 0:
+            return(-1)
+        else:
+            return(1)
 
 def distract_coords(points):
         x = []
@@ -191,12 +193,13 @@ def distract_coords(points):
 if __name__ == '__main__':
     x_field = [0, -92.90069267118855, 140.84355006431937, 353.1844363236166, 433.09813506117024, 425.66284007499496, 0]
     y_field = [0, 276.2304132311622, 304.56447871509005, 223.57025571008904, 160.2219372171964, 0.0, 0]
+    # get_figure(0.2, 0.4, 0.4)
     # plt.plot(x_field, y_field, 'b')
     with open('figure.json', 'r') as read_file:
         data = json.load(read_file)
     # print(data)
     points = [data['figure1'], data['figure2'], data['figure3']]
-    # points = [data['figure2']]
+    # points = [data['figure1']]
     # points.reverse()
     j = 0
     # flag = True
@@ -219,6 +222,7 @@ if __name__ == '__main__':
         
             path = PathFinder()
             x, y, x_max, y_max = path.find_max_length(point)
+            # print(len(x))
             for i in range(0,len(x)):
                 x[i] = x[i]*5 
                 y[i] = y[i]*5 
@@ -235,6 +239,7 @@ if __name__ == '__main__':
             data_local = {"x": x, "y": y}
             data['points_'+str(j)] = data_local 
             j+=1
+        
         json.dump(data,write_file)
     plt.grid()
     plt.show()

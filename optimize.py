@@ -37,7 +37,7 @@ def optimize_trajectory(copter, path):
         points = path.get_points()
         copter.points = points
         time_struct = copter.calculate_time()
-        time_list.append([time_struct['fig1']['time'], time_struct['fig2']['time'], time_struct['fig2']['time']])#new times 
+        time_list.append([time_struct['fig1']['time'], time_struct['fig2']['time'], time_struct['fig3']['time']])#new times 
     
     index, min_time = optimize_time(time_list)
     horizontal_lines.get_figure(*k_list[index])
