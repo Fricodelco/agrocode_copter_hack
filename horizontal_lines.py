@@ -12,14 +12,14 @@ class Figure:
     def __init__(self,points):
         self.points = points
         self.y = 0
-        self.x_min = 10000 
-        self.x_max = -10000
-        self.y_min = 10000 
-        self.y_max = -10000
-        self.i_min = 10000
-        self.i_max = -10000
-        self.j_min = 10000
-        self.j_max = -10000
+        self.x_min = 500 
+        self.x_max = -500
+        self.y_min = 500 
+        self.y_max = -500
+        self.i_min = 500
+        self.i_max = -500
+        self.j_min = 500
+        self.j_max = -500
         self.func_list = []
     def get_minmax_in_field(self):
         
