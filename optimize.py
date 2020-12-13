@@ -44,14 +44,14 @@ def optimize_trajectory(copter, path):
         horizontal_lines.get_figure(*el)
         points = path.get_points()
         copter.points = points
-        time_struct = copter.calculate_time()
+        time_struct, _, _ = copter.calculate_time()
         time_list.append([time_struct['fig1']['time'], time_struct['fig2']['time'], time_struct['fig3']['time']])#new times 
     
     index, min_time = optimize_time(time_list)
     horizontal_lines.get_figure(*k_list[index])
     points_optimize = path.get_points()
     copter.points = points_optimize
-    time_struct = copter.calculate_time()
+    time_struct, ind_angle, radius = copter.calculate_time()
 
     stop_time = [time_struct['fig1']['iters_of_stop_points'], time_struct['fig2']['iters_of_stop_points'], time_struct['fig3']['iters_of_stop_points']]
 
@@ -59,4 +59,4 @@ def optimize_trajectory(copter, path):
     with open('points.json', 'w') as js:
         json.dump(points_optimize, js)
     
-    return stop_time
+    return stop_time, ind_angle, radius

@@ -88,7 +88,7 @@ def point_lx_for_task(number, type_, lat, lon, alt, radius):
             photo=0, panoSectors=0, delta=0)
     return point
 
-def write_path_mission(file_name, j, start_index, points_in_gps, i, el):
+def write_path_mission(file_name, j, start_index, points_in_gps, i, el, ind_angle, radius):
     with open(file_name+str(j)+'.txt','w') as wr:
         for k in range(start_index,len(points_in_gps[i][0])):#point
             if k == start_index:
@@ -98,10 +98,14 @@ def write_path_mission(file_name, j, start_index, points_in_gps, i, el):
                 start_index = el
                 break
             else:
-                wr.write(point_lx_for_task(k-start_index, NAV_LEG_SIMPLE, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, 2.0))
+                try:
+                    index = ind_angle[i].index(k-1)
+                    wr.write(point_lx_for_task(k-start_index, NAV_LEG_NON_STOP, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, radius[i][index]))
+                except ValueError:
+                    wr.write(point_lx_for_task(k-start_index, NAV_LEG_SIMPLE, points_in_gps[i][0][k][1], points_in_gps[i][0][k][0], 2.0, 2.0))
     return start_index
 
-def flight_mission(pr_angle, base_point, stop_point):
+def flight_mission(pr_angle, base_point, stop_point, ind_angle, radius):
     file_name_lx = ['first_mission_lx_','second_mission_lx_','third_mission_lx_']
     with open('points.json') as js:
         data = json.load(js)
@@ -115,8 +119,8 @@ def flight_mission(pr_angle, base_point, stop_point):
 
     for i, file_name in enumerate(file_name_lx):#index copter
         for j, el in enumerate(stop_point[i]):#stop point
-            start_index = write_path_mission(file_name, j, start_index, points_in_gps, i, el)
-        write_path_mission(file_name, len(stop_point[i]), start_index, points_in_gps, i, len(points_in_gps[i][0])-1)
+            start_index = write_path_mission(file_name, j, start_index, points_in_gps, i, el, ind_angle, radius)
+        write_path_mission(file_name, len(stop_point[i]), start_index, points_in_gps, i, len(points_in_gps[i][0])-1, ind_angle, radius)
                     
     # for j, f_name in enumerate(file_name_ardu):
     #     with open(f_name, 'w') as wr:
@@ -180,4 +184,4 @@ def parse_kml_file(name_file):
 
     return temp, pr_angle, base_point
 
-flight_mission(0.57, [45.7695, 50.0658], [[10,21],[11, 25],[13,28]])
+#flight_mission(0.57, [45.7695, 50.0658], [[10,21],[11, 25],[13,28]], [[1,3,5,9,7],[1,3,5,9,7],[1,3,5,9,7]],[[10,2,58,96,6],[10,2,58,96,6],[10,2,58,96,6]])
