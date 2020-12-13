@@ -93,13 +93,14 @@ class PathFinder():
         while i < len(x_cross)-1:
             euql_1 = sqrt(x_cross[i-1]**2 + y_cross[i-1]**2)
             euql_2 = sqrt(x_cross[i+1]**2 + y_cross[i+1]**2)
-            if abs(euql_1 - euql_2) < 10:
+            # print(abs(euql_1 - euql_2), i)
+            if abs(euql_1 - euql_2) < 3:
                 temp = x_cross[i]
                 x_cross[i] = x_cross[i+1]
                 x_cross[i+1] = temp
                 temp = y_cross[i]
                 y_cross[i] = y_cross[i+1]
-                i+=4
+                i+=2
             else:
                 # print(abs(euql_1 - euql_2))
                 i+=2

@@ -89,8 +89,8 @@ class Copter():
         answer = {'fig1':0,
                 'fig2':0,
                 'fig3':0}
-        angle_indexis = []
-        radiuss = []
+        angle_indexis = [[],[],[]]
+        radiuss = [[],[],[]]
         for j in range(0,3):
             points_cur = self.points['points_'+str(j)]
             dist, angle = self.get_distance_angle_between_points(x_points=points_cur['x'], y_points=points_cur['y'])
@@ -103,14 +103,22 @@ class Copter():
             first_land = True
             # print(angle)
             for i in range(0, len(dist), 1):
+                time_length = 0
+                time_angle = 0
                 if(abs(angle[i]) <= pi/2):
-                    angle_indexis.append(i)
+                    angle_indexis[j].append(i)
                     r = (18)/(angle[i]-pi/2)
-                    radiuss.append(abs(r))
-                time_length, _, _ = self.time_for_line_movement(dist[i])
-                time_angle = self.time_for_turn(angle[i])
-                time_inc += time_length
-                time_inc += time_angle
+                    radiuss[j].append(abs(r))
+                    time_length, _, _ = self.time_for_line_movement(dist[i])
+                    time_angle = self.time_for_turn(angle[i])
+                    time_inc += time_length
+                    time_inc += time_angle
+
+                else:
+                    time_length, _, _ = self.time_for_line_movement(dist[i])
+                    time_angle = self.time_for_turn(angle[i])
+                    time_inc += time_length
+                    time_inc += time_angle
                 if time_inc > self.bak:
                     iters_of_stop_points.append(i-1)
                     if first_land == True:
@@ -129,6 +137,8 @@ class Copter():
             # print(time)
         # print(len(angle_indexis))
         return answer, angle_indexis, radiuss
+        # return answer
+
 if __name__ == '__main__':
     path = PathFinder()
     
