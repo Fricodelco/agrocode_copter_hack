@@ -160,7 +160,8 @@ def get_figure(k1, k2, k3):
     second_countour.append([x2, y21])
     second_countour = sort(second_countour)
     second_countour.insert(0,[x1, y11])
-
+    second_countour.append([x1, y11])
+    
     third_countour = [[x2,y22]]
     for point in points:
         if (point[0] > x2):
