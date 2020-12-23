@@ -4,8 +4,10 @@ import re
 import math
 import matplotlib.pyplot as plt
 import json
+import numpy as np
 
-rad = 6372795
+rad = 6365446.4253514
+
 
 NAV_LEG_TAKEOFF = 'NAV_LEG_TAKEOFF'
 NAV_LEG_SIMPLE = 'NAV_LEG_SIMPLE'
@@ -40,19 +42,6 @@ def points_distance(point1, point2):
     ad = math.atan2(y,x)
     dist = ad*rad
     
-    #вычисление начального азимута
-    x = (cl1*sl2) - (sl1*cl2*cdelta)
-    y = sdelta*cl2
-    z = math.degrees(math.atan(-y/x))
-    
-    if (x < 0):
-        z = z+180.
-    
-    z2 = (z+180.) % 360. - 180.
-    z2 = - math.radians(z2)
-    anglerad2 = z2 - ((2*math.pi)*math.floor((z2/(2*math.pi))) )
-    angledeg = (anglerad2*180.)/math.pi
-    
     return dist
 
 def turn_point(x,y,angle):
@@ -64,8 +53,8 @@ def turn_point(x,y,angle):
 def from_meter_to_gps(x_point, y_point, pr_angle, base_point):
     gps_point = []
     for i,el in enumerate(x_point):
-        x_point[i], y_point[i]  = turn_point(x_point[i], y_point[i], pr_angle)
-        gps_point.append([base_point[0]+x_point[i]/rad*180/math.pi, base_point[1]+y_point[i]/rad*180/math.pi])
+        #x_point[i], y_point[i]  = turn_point(x_point[i], y_point[i], pr_angle)
+        gps_point.append([base_point[0]+x_point[i]/rad*180.0/math.pi, base_point[1]+y_point[i]/rad*180.0/math.pi])
     return gps_point
 
 def point_lx(number, type_, lat, lon, alt, radius, waitTime, maxhspeed, maxvspeed, 
@@ -168,14 +157,21 @@ def parse_kml_file(name_file):
 
     pr_angle = math.atan2(points[5][1]-base_point[1],points[5][0]-base_point[0])
 
+    # b_x = rad * math.cos(base_point[1])*math.cos(base_point[0])
+    # b_y = rad * math.cos(base_point[1])*math.sin(base_point[0])
     for point in test_points:
         distance = points_distance(base_point,point)
-        angle = math.atan2(point[1]-base_point[1],point[0]-base_point[0]) - pr_angle
-        x_point.append(distance*math.cos(angle)+width_p)
-        y_point.append(distance*math.sin(angle)+hight_p)
+        #angle = math.atan2(point[1]-base_point[1],point[0]-base_point[0]) 
+        #x_point.append(distance*math.cos(angle)+width_p)
+        #y_point.append(distance*math.sin(angle)+hight_p)
+        x_point.append(rad * (point[0] - base_point[0])*math.pi/180.0)
+        y_point.append(rad * (point[1] - base_point[1])*math.pi/180.0)
 
     x_point.append(width_p)
     y_point.append(hight_p)
+
+    plt.plot(x_point,y_point)
+    plt.show()
 
     temp = []
 
@@ -184,4 +180,5 @@ def parse_kml_file(name_file):
 
     return temp, pr_angle, base_point
 
+#parse_kml_file('pole.kml')
 #flight_mission(0.57, [45.7695, 50.0658], [[10,21],[11, 25],[13,28]], [[1,3,5,9,7],[1,3,5,9,7],[1,3,5,9,7]],[[10,2,58,96,6],[10,2,58,96,6],[10,2,58,96,6]])
