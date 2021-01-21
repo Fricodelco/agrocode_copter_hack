@@ -155,15 +155,7 @@ def parse_kml_file(name_file):
     test_points.reverse()
     test_points = test_points[1:] + [test_points[0]] 
 
-    pr_angle = math.atan2(points[5][1]-base_point[1],points[5][0]-base_point[0])
-
-    # b_x = rad * math.cos(base_point[1])*math.cos(base_point[0])
-    # b_y = rad * math.cos(base_point[1])*math.sin(base_point[0])
     for point in test_points:
-        distance = points_distance(base_point,point)
-        #angle = math.atan2(point[1]-base_point[1],point[0]-base_point[0]) 
-        #x_point.append(distance*math.cos(angle)+width_p)
-        #y_point.append(distance*math.sin(angle)+hight_p)
         x_point.append(rad * (point[0] - base_point[0])*math.pi/180.0)
         y_point.append(rad * (point[1] - base_point[1])*math.pi/180.0)
 
@@ -178,7 +170,7 @@ def parse_kml_file(name_file):
     for i in range(len(x_point)):
         temp.append([x_point[i], y_point[i]])
 
-    return temp, pr_angle, base_point
+    return temp, 0, base_point
 
 #parse_kml_file('pole.kml')
 #flight_mission(0.57, [45.7695, 50.0658], [[10,21],[11, 25],[13,28]], [[1,3,5,9,7],[1,3,5,9,7],[1,3,5,9,7]],[[10,2,58,96,6],[10,2,58,96,6],[10,2,58,96,6]])
